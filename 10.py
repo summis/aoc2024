@@ -5,32 +5,37 @@ data = {
     for row, s in enumerate(sys.stdin.read().splitlines())
     for col, c in enumerate(s)
 }
-
 trailheads = {k for k, v in data.items() if v == 0}
 
 
-def climb(start):
+def find_neighbors(pos):
+    return [
+        pos + delta
+        for delta in [1, -1, 1j, -1j]
+        if pos + delta in data and data[pos + delta] == data[pos] + 1
+    ]
+
+
+def calculate_reachable(start):
     todo = [start]
     visited = set()
 
     while todo:
         pos = todo.pop()
         visited.add(pos)
-
-        for delta in [1, -1, 1j, -1j]:
-            new_pos = pos + delta
-            if (
-                new_pos in data
-                and new_pos not in visited
-                and data[new_pos] == data[pos] + 1
-            ):
-                todo.append(new_pos)
+        for n in find_neighbors(pos):
+            if n not in visited:
+                todo.append(n)
 
     return visited
 
 
-total = 0
-for trailhead in trailheads:
-    total += sum(1 for pos in climb(trailhead) if data[pos] == 9)
+def calculate_trail_ends(current):
+    yield current
+    yield from (
+        end for pos in find_neighbors(current) for end in calculate_trail_ends(pos)
+    )
 
-print(total)
+
+for scoring in (calculate_reachable, calculate_trail_ends):
+    print(sum(sum(data[end] == 9 for end in scoring(start)) for start in trailheads))
