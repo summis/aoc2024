@@ -21,4 +21,17 @@ for antenna in antennas:
                 antinodes.add(y + diff)
                 antinodes.add(x - diff)
 
+extended_antinodes = set()
+for antenna in antennas:
+    positions = antenna_positions[antenna]
+    for x in positions:
+        for y in positions:
+            if x != y:
+                diff = y - x
+                for i in range(-60, 61):
+                    extended_antinodes.add(y + diff * i)
+                    extended_antinodes.add(x - diff * i)
+
+
 print(sum(1 for a in antinodes if a in grid))
+print(sum(1 for a in extended_antinodes if a in grid))
