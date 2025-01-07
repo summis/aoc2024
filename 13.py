@@ -22,3 +22,18 @@ for match in matches:
         scores.append(3 * na + nb)
 
 print(sum(scores))
+
+scores = []
+
+for match in matches:
+    xa, ya, xb, yb, X, Y = map(int, match)
+    X += 10000000000000
+    Y += 10000000000000
+
+    na = (Y * xb - X * yb) / (ya * xb - xa * yb)
+    nb = (X - na * xa) / xb
+
+    if na.is_integer() and nb.is_integer():
+        scores.append(3 * na + nb)
+
+print(int(sum(scores)))
