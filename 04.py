@@ -56,4 +56,14 @@ def p1():
     return sum(len(re.findall(target, s)) for s in create_all_strings())
 
 
-print(p1())
+def is_xmas(p):
+    first_leg = "".join(data.get(p + i, "") for i in [-1 + -1j, 0, 1 + 1j])
+    second_leg = "".join(data.get(p + i, "") for i in [-1 + 1j, 0, 1 - 1j])
+    return (first_leg in ("MAS", "SAM")) and (second_leg in ("MAS", "SAM"))
+
+
+def p2():
+    return sum(is_xmas(p) for p in data)
+
+
+print(p1(), p2())
