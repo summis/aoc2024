@@ -1,0 +1,7 @@
+input*
+toy*
+.vimrc
+.vscode/
+pkg/
+.venv
+graph.py
